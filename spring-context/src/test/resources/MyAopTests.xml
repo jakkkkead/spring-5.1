@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+				http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+	<!-- 使用 XML Configuration 启用 @AspectJ 支持,与@EnableAspectJAutoProxy等作用 -->
+	<!-- 向容器中注册AnnotationAwareAspectJAutoProxyCreator解析器 -->
+	<aop:aspectj-autoproxy/>
+	<bean id="target" class="org.springframework.aop.mytest.Target"></bean>
+	<bean id="myAspect" class="org.springframework.aop.mytest.MyAspect"></bean>
+	<bean id="dog" class="org.springframework.aop.mytest.Dog"></bean>
+	<bean id="aspect2" class="org.springframework.aop.mytest.Aspect2"></bean>
+	<aop:config>
+		<!--    访问修饰符          返回值类型（必填）     包和类 (需要具体到类) 方法（必填）   参数（必填）
+    execution(modifiers-pattern? ret-type-pattern declaring-type-pattern?name-pattern(param-pattern)  throws-pattern?) 
+         -->
+		<aop:pointcut id="pointcut" expression="execution (* org.springframework.aop.mytest.*.*(..))"/>
+		<aop:aspect ref="myAspect" order="1">
+			<aop:before method="before" pointcut-ref="pointcut"></aop:before>
+			<aop:after method="after" pointcut-ref="pointcut"></aop:after>
+			<aop:after-returning method="afterReturn" pointcut-ref="pointcut"></aop:after-returning>
+			<aop:around method="around" pointcut-ref="pointcut"></aop:around>
+			<aop:after-throwing method="afterThrowing" pointcut-ref="pointcut"></aop:after-throwing>
+		</aop:aspect>
+		<aop:aspect ref="aspect2" order="2">
+			<aop:before method="before" pointcut-ref="pointcut"></aop:before>
+			<aop:after method="after" pointcut-ref="pointcut"></aop:after>
+		</aop:aspect>
+	</aop:config>
+</beans>

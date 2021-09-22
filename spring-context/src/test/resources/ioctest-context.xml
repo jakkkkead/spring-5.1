@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+	<!--开启注解扫描，如@Compent,@Resource,添加 @Autowired解析器等 -->
+	<context:component-scan base-package="org.springframework.context.ioctest"/>
+<!--	<bean id="helloService" class="org.springframework.context.mytest.HelloService" autowire="byName">-->
+<!--		<property name="name" value="夏梦"></property>-->
+<!--	</bean>-->
+<!--	<bean id="beanPostProcessorTest" class="org.springframework.context.mytest.BeanPostProcessorTest">-->
+<!--		&lt;!&ndash;spring 第3种依赖注入方式，构造函数 &ndash;&gt;-->
+<!--		<constructor-arg name="des" value="福州"></constructor-arg>-->
+<!--	</bean>-->
+<!--	<bean id="iocByNameTest" class="org.springframework.context.mytest.IocByNameTest" autowire="byName">-->
+<!--	</bean>-->
+<!--	-->
+	<bean id="simple" class="org.springframework.context.ioctest.SimpleBean">
+	</bean>
+	<bean id="iocBySetterBean" class="org.springframework.context.ioctest.IocBySetterBean" autowire="byType">
+<!--		<property name="name" value="setter方法"></property>-->
+	</bean>
+	<bean id="iocByConstruct" class="org.springframework.context.ioctest.IocByConstruct" autowire="byName">
+	</bean>
+<!--	<bean id="welcomeService" class="org.springframework.context.mytest.WelcomeService"></bean>-->
+<!--	<bean id="goodByeService" class="org.springframework.context.mytest.GoodByeService" primary="true"></bean>-->
+<!--	<bean id="goodByeService" class="org.springframework.context.mytest.GoodByeService"></bean>-->
+
+	<!--	<bean id="beanFactoryPostProcessorTest" class="org.springframework.context.mytest.BeanFactoryPostProcessorTest"></bean>-->
+</beans>
