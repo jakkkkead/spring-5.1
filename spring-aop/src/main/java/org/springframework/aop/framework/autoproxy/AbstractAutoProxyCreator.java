@@ -242,7 +242,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 
 	@Override
 	public Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName) {
-		Object cacheKey = getCacheKey(beanClass, beanName);
+		Object cacheKey = getCacheKey(beanClass, beanName);//构建缓存key
 
 		if (!StringUtils.hasLength(beanName) || !this.targetSourcedBeans.contains(beanName)) {
 			if (this.advisedBeans.containsKey(cacheKey)) {
@@ -471,7 +471,10 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 
 		ProxyFactory proxyFactory = new ProxyFactory();
 		proxyFactory.copyFrom(this);
-
+		/*
+		 * 默认配置下，或用户显式配置 proxy-target-class = "false" 时，
+		 * 这里的 proxyFactory.isProxyTargetClass() 也为 false，代表是否强制使用CGLIB创建代理
+		 */
 		if (!proxyFactory.isProxyTargetClass()) {
 			if (shouldProxyTargetClass(beanClass, beanName)) {
 				proxyFactory.setProxyTargetClass(true);

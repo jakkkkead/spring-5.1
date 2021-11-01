@@ -18,7 +18,6 @@ package org.springframework.aop.config;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import org.junit.Before;
 import org.junit.Test;
 

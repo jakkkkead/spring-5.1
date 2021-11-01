@@ -292,7 +292,8 @@ public class DataSourceTransactionManager extends AbstractPlatformTransactionMan
 				txObject.getConnectionHolder().setTimeoutInSeconds(timeout);
 			}
 
-			// Bind the connection holder to the thread.
+			// Bind the connection holder to the thread.将连接绑定到当前线程
+			//mybatis中获取的数据库连接，就是根据 dataSource 从ThreadLocal中获取的，从而保证整个事务过程中connection的一致性
 			if (txObject.isNewConnectionHolder()) {
 				TransactionSynchronizationManager.bindResource(obtainDataSource(), txObject.getConnectionHolder());
 			}

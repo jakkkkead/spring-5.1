@@ -44,7 +44,7 @@ public class AspectJAfterAdvice extends AbstractAspectJAdvice
 	@Override
 	public Object invoke(MethodInvocation mi) throws Throwable {
 		try {
-			return mi.proceed();
+			return mi.proceed();//调用==》MethodBeforeAdviceInterceptor
 		}
 		finally {
 			invokeAdviceMethod(getJoinPointMatch(), null, null);
