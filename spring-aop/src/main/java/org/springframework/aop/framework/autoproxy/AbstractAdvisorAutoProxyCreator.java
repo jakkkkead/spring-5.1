@@ -91,7 +91,7 @@ public abstract class AbstractAdvisorAutoProxyCreator extends AbstractAutoProxyC
 	 * @see #extendAdvisors
 	 */
 	protected List<Advisor> findEligibleAdvisors(Class<?> beanClass, String beanName) {
-		//查找所有的通知器
+		//查找所有的通知器,包括 xml和@Aspect 两种注入方式，由子类AnnotationAwareAspectJAutoProxyCreator实现
 		List<Advisor> candidateAdvisors = findCandidateAdvisors();
 		/*
 		 * 筛选可应用在 beanClass 上的 Advisor，通过 ClassFilter 和 MethodMatcher

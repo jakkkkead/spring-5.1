@@ -39,6 +39,7 @@ import java.io.Flushable;
 public interface TransactionStatus extends SavepointManager, Flushable {
 
 	/**
+	 *  返回当前事务是否为新事务（否则将参与到现有事务中，或者可能一开始就不在实际事务中运行）
 	 * Return whether the present transaction is new; otherwise participating
 	 * in an existing transaction, or potentially not running in an actual
 	 * transaction in the first place.
@@ -46,6 +47,7 @@ public interface TransactionStatus extends SavepointManager, Flushable {
 	boolean isNewTransaction();
 
 	/**
+	 * 返回该事务是否在内部携带保存点，也就是说，已经创建为基于保存点的嵌套事务。
 	 * Return whether this transaction internally carries a savepoint,
 	 * that is, has been created as nested transaction based on a savepoint.
 	 * <p>This method is mainly here for diagnostic purposes, alongside
@@ -59,6 +61,7 @@ public interface TransactionStatus extends SavepointManager, Flushable {
 	boolean hasSavepoint();
 
 	/**
+	 * 设置事务仅回滚。
 	 * Set the transaction rollback-only. This instructs the transaction manager
 	 * that the only possible outcome of the transaction may be a rollback, as
 	 * alternative to throwing an exception which would in turn trigger a rollback.
@@ -72,12 +75,14 @@ public interface TransactionStatus extends SavepointManager, Flushable {
 	void setRollbackOnly();
 
 	/**
+	 * 返回事务是否已标记为仅回滚
 	 * Return whether the transaction has been marked as rollback-only
 	 * (either by the application or by the transaction infrastructure).
 	 */
 	boolean isRollbackOnly();
 
 	/**
+	 * 将会话刷新到数据存储区
 	 * Flush the underlying session to the datastore, if applicable:
 	 * for example, all affected Hibernate/JPA sessions.
 	 * <p>This is effectively just a hint and may be a no-op if the underlying
@@ -89,6 +94,7 @@ public interface TransactionStatus extends SavepointManager, Flushable {
 	void flush();
 
 	/**
+	 * 返回事物是否已经完成，无论提交或者回滚。
 	 * Return whether this transaction is completed, that is,
 	 * whether it has already been committed or rolled back.
 	 * @see PlatformTransactionManager#commit

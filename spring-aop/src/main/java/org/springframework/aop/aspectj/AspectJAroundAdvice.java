@@ -67,6 +67,7 @@ public class AspectJAroundAdvice extends AbstractAspectJAdvice implements Method
 		ProxyMethodInvocation pmi = (ProxyMethodInvocation) mi;
 		ProceedingJoinPoint pjp = lazyGetProceedingJoinPoint(pmi);
 		JoinPointMatch jpm = getJoinPointMatch(pmi);
+		//在环绕方法中，执行 ProxyMethodInvocation.proceed(),会调用MethodBeforeAdviceInterceptor的 proceed()方法
 		return invokeAdviceMethod(pjp, jpm, null, null);
 	}
 

@@ -112,10 +112,10 @@ abstract class ConfigurationClassUtils {
 			}
 		}
 
-		if (isFullConfigurationCandidate(metadata)) {
+		if (isFullConfigurationCandidate(metadata)) {//检查是否有@Configuration
 			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_FULL);
 		}
-		else if (isLiteConfigurationCandidate(metadata)) {
+		else if (isLiteConfigurationCandidate(metadata)) {//检查是否有@Bean
 			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_LITE);
 		}
 		else {

@@ -1725,7 +1725,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		// Now we have the bean instance, which may be a normal bean or a FactoryBean.
 		// If it's a FactoryBean, we use it to create a bean instance, unless the
 		// caller actually wants a reference to the factory.
-		//获取FactoryBean本身，如： applicationContext.getBean("factory"),name不以&开头表明想要获取该类本身，否则获取该类的getObject方法返回的bean
+		//获取FactoryBean本身，如： applicationContext.getBean("factory"),name以&开头表明想要获取该类本身，否则获取该类的getObject方法返回的bean
 		if (!(beanInstance instanceof FactoryBean) || BeanFactoryUtils.isFactoryDereference(name)) {
 			return beanInstance;
 		}
