@@ -79,7 +79,7 @@ public class InjectionMetadata {
 	}
 
 	public void inject(Object target, @Nullable String beanName, @Nullable PropertyValues pvs) throws Throwable {
-		//@Autowired,@Value等之前解析到最后，将结果保存在这个字段上
+		//@Autowired,@Value，@Resource等之前解析到最后，将结果保存在这个字段上
 		Collection<InjectedElement> checkedElements = this.checkedElements;
 		Collection<InjectedElement> elementsToIterate =
 				(checkedElements != null ? checkedElements : this.injectedElements);
@@ -178,6 +178,7 @@ public class InjectionMetadata {
 			if (this.isField) {
 				Field field = (Field) this.member;
 				ReflectionUtils.makeAccessible(field);
+				//@Resource解析
 				field.set(target, getResourceToInject(target, requestingBeanName));
 			}
 			else {

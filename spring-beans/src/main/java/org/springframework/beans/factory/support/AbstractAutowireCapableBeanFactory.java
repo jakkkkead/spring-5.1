@@ -619,7 +619,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		try {
 			//负责属性装配,很重要（依赖注入）
 			populateBean(beanName, mbd, instanceWrapper);
-			//这里是处理bean初始化完成后的各种回调，例如init-method、InitializingBean 接口、BeanPostProcessor 接口
+			//这里是处理bean初始化完成后的各种回调，例如init-method、InitializingBean 接口、BeanPostProcessor 接口，
+			// aop代理对象生成
 			exposedObject = initializeBean(beanName, exposedObject, mbd);
 		}
 		catch (Throwable ex) {
@@ -973,7 +974,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		Object exposedObject = bean;
 		if (!mbd.isSynthetic() && hasInstantiationAwareBeanPostProcessors()) {
 			for (BeanPostProcessor bp : getBeanPostProcessors()) {
-				//aop实现关键，返回代理对象
+				//aop实现关键，返回代理对象；三级缓存，提前生成代理对象，后续无需再生成代理对象
 				if (bp instanceof SmartInstantiationAwareBeanPostProcessor) {
 					SmartInstantiationAwareBeanPostProcessor ibp = (SmartInstantiationAwareBeanPostProcessor) bp;
 					exposedObject = ibp.getEarlyBeanReference(exposedObject, beanName);
@@ -1193,7 +1194,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			return obtainFromSupplier(instanceSupplier, beanName);
 		}
 		// 旧版本的Spring可以通过xml配置 <bean id='A' class='xxx' factory-method='getA'>从而获得静态的工厂方法获得bean A
-		//3. 工厂方法实例化，包括实例化工厂和静态工厂
+		//3. 工厂方法实例化，包括实例化工厂和静态工厂 ,@Bean方式注入采用工厂方法（method.invoke（）)
 		if (mbd.getFactoryMethodName() != null) { // 采用工厂方法实例化
 			return instantiateUsingFactoryMethod(beanName, mbd, args);
 		}
@@ -1907,6 +1908,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 					beanName, "Invocation of init method failed", ex);
 		}
 		if (mbd == null || !mbd.isSynthetic()) {//调用BeanPostProcessor.postProcessAfterInitialization方法
+			//aop代理对象生成
 			wrappedBean = applyBeanPostProcessorsAfterInitialization(wrappedBean, beanName);
 		}
 

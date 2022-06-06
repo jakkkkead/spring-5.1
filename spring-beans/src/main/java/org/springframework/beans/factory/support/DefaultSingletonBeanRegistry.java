@@ -167,6 +167,10 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	}
 
 	/**
+	 * 为什么使用3级缓存，而不是二级缓存？
+	 * 如果没有aop，使用二级缓存没问题。
+	 * 对于aop代理对象，只有2级缓存，那么实际拿到的对象和代理对象不是同一个对象，最终会有问题
+	 * 三级缓存中，ObjectFactory可以提前生成代理对象，然后对象需要放到二级缓存，避免重复创建代理对象
 	 * Return the (raw) singleton object registered under the given name.
 	 * <p>Checks already instantiated singletons and also allows for an early
 	 * reference to a currently created singleton (resolving a circular reference).

@@ -494,6 +494,7 @@ public class CommonAnnotationBeanPostProcessor extends InitDestroyAnnotationBean
 			throw new NoSuchBeanDefinitionException(element.lookupType,
 					"No resource factory configured - specify the 'resourceFactory' property");
 		}
+		//自动注入@Resource
 		return autowireResource(this.resourceFactory, element, requestingBeanName);
 	}
 
@@ -516,14 +517,16 @@ public class CommonAnnotationBeanPostProcessor extends InitDestroyAnnotationBean
 		if (factory instanceof AutowireCapableBeanFactory) {
 			AutowireCapableBeanFactory beanFactory = (AutowireCapableBeanFactory) factory;
 			DependencyDescriptor descriptor = element.getDependencyDescriptor();
+			//首先判断@Resource是按名称来查询还是类型，如果是类型，则调用依赖解析器根据类型从Spring容器中查找（默认byName）
 			if (this.fallbackToDefaultTypeMatch && element.isDefaultName && !factory.containsBean(name)) {
 				autowiredBeanNames = new LinkedHashSet<>();
+				//按类型，和autowired一样的步骤
 				resource = beanFactory.resolveDependency(descriptor, requestingBeanName, autowiredBeanNames, null);
 				if (resource == null) {
 					throw new NoSuchBeanDefinitionException(element.getLookupType(), "No resolvable resource object");
 				}
 			}
-			else {
+			else {//如果是按名称，则直接调用BeanFactory的getBean()方法，根据BeanName从Spring容器中查找
 				resource = beanFactory.resolveBeanByName(name, descriptor);
 				autowiredBeanNames = Collections.singleton(name);
 			}

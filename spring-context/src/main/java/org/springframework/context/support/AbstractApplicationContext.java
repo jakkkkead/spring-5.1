@@ -524,7 +524,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			prepareRefresh();
 
 			// Tell the subclass to refresh the internal bean factory.
-			//这个方法负责了BeanFactory的初始化、Bean的加载和注册等事件
+			//这个方法负责了BeanFactory的初始化、Bean的加载和注册等事件，对于xml方式来说，这里很重要（获取Bean定义的入口）
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
 			// Prepare the bean factory for use in this context.
@@ -542,6 +542,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 				// Invoke factory processors registered as beans in the context.
 				//调用BeanFactoryPostProcessor各个实现类的postProcessBeanFactory(factory) 方法
+				//对于注解方式注入容器，这里是入口；关注ConfigurationClassPostProcess
 				invokeBeanFactoryPostProcessors(beanFactory);
 
 				// Register bean processors that intercept bean creation.

@@ -352,7 +352,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 			return bean;
 		}
 		//在InstantiationAwareBeanPostProcessor中的postProcessBeforeInstantiation(Class<?>,String)
-		//已经将advisedBeans筛选出来了
+		//已经将advisedBeans筛选出来了，即3级缓存已经提前创建了代理对象
 		if (Boolean.FALSE.equals(this.advisedBeans.get(cacheKey))) {
 			return bean;
 		}
@@ -364,12 +364,13 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 			this.advisedBeans.put(cacheKey, Boolean.FALSE);
 			return bean;
 		}
-		// 为目标 bean 查找合适的通知器(拦截器）
+		// 为目标 bean 查找合适的通知器(拦截器）@Aspect，@Before，@After，@Around
 		// Create proxy if we have advice.
 		Object[] specificInterceptors = getAdvicesAndAdvisorsForBean(bean.getClass(), beanName, null);
 		//如果找到了通知器，则为bean生成代理对象返回，否则直接返回bean
 		if (specificInterceptors != DO_NOT_PROXY) {
 			this.advisedBeans.put(cacheKey, Boolean.TRUE);
+			//生成代理对象
 			Object proxy = createProxy(
 					bean.getClass(), beanName, specificInterceptors, new SingletonTargetSource(bean));
 			this.proxyTypes.put(cacheKey, proxy.getClass());
@@ -490,7 +491,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 		if (advisorsPreFiltered()) {
 			proxyFactory.setPreFiltered(true);
 		}
-
+		//生成代理
 		return proxyFactory.getProxy(getProxyClassLoader());
 	}
 

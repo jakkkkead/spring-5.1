@@ -632,6 +632,7 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 				}
 			}
 			if (value != null) {
+				//利用反射，直接进行依赖注入
 				ReflectionUtils.makeAccessible(field);
 				field.set(bean, value);
 			}

@@ -161,16 +161,19 @@ public class ReflectiveMethodInvocation implements ProxyMethodInvocation, Clonea
 		// We start with an index of -1 and increment early.
 		// 拦截器链中的最后一个拦截器执行完后，即可执行目标方法
 		if (this.currentInterceptorIndex == this.interceptorsAndDynamicMethodMatchers.size() - 1) {
+			//jdk代理，和cglib代理实现目标方法是不一样的
+			//jdk通过java反射方式执行目标方法，反射调用需要经过本地方法
+			//cglib通过执行MethodProxy，先init创建索引，即为每个代理方法创建索引，然后直接调用
 			return invokeJoinpoint();
 		}
 		/**
 		 * 执行顺序：
 		 *  ExposeInvocationInterceptor
-		 *  MethodBeforeAdviceInterceptor
-		 *  AspectJAfterAdvice
-		 *  AfterReturningAdviceInterceptor
-		 *  AspectJAroundAdvice
-		 *  AspectJAfterThrowingAdvice
+		 *  AspectJAroundAdvice   ----> 展示效果：1， 5
+		 *  MethodBeforeAdviceInterceptor 展示效果：2
+		 *  AspectJAfterAdvice (无论如何都会执行） ---> 展示效果：4
+		 *  AfterReturningAdviceInterceptor（可能不执行，抛异常）: 展示效果：3
+		 *  AspectJAfterThrowingAdvice（可能不执行，不抛异常）展示效果：3
 		 */
 		Object interceptorOrInterceptionAdvice =
 				this.interceptorsAndDynamicMethodMatchers.get(++this.currentInterceptorIndex);

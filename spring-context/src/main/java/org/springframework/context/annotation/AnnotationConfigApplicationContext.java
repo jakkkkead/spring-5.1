@@ -63,7 +63,9 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 * through {@link #register} calls and then manually {@linkplain #refresh refreshed}.
 	 */
 	public AnnotationConfigApplicationContext() {
+		//注册一系列注解解析器(BeanDefinition)，如@Configuration,@Autowired
 		this.reader = new AnnotatedBeanDefinitionReader(this);
+		//注册bean扫描器,@Component,@Named,@ManageBean
 		this.scanner = new ClassPathBeanDefinitionScanner(this);
 	}
 
@@ -84,8 +86,11 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 * {@link Configuration @Configuration} classes
 	 */
 	public AnnotationConfigApplicationContext(Class<?>... componentClasses) {
+		//初始化一些解析器
 		this();
+		//将传入的Class注册到容器中，放入到DefaultListableBeanFactory的BeanDefinitionMap里面
 		register(componentClasses);
+		//开始刷新容器
 		refresh();
 	}
 

@@ -87,4 +87,11 @@ public class MyContestTests {
 		iocByAutowired.say();
 	}
 
+	@Test
+	public void testFactoryBean() {
+		ApplicationContext context = new ClassPathXmlApplicationContext("classpath:classpath-context.xml");
+		Object myFactoryBean = context.getBean("myFactoryBean");
+		Object bean = context.getBean("&myFactoryBean");
+	}
+
 }
